@@ -1,0 +1,206 @@
+on every round:
+1. Industry produces power
+	1. IF [ power stored < max power stored ]:
+		1. FOREACH [ power source ]:
+			- cleaner sources are preferred
+			1. IF [ power stored < max power stored ]
+				THEN:
+					1. IF [ money > power production cost ]
+						THEN [ industry produces power ]
+						ELSE [ skip ]
+					2. IF [ industry produced power ]:
+						THEN [ industry produces power source pollution ]
+						ELSE [ skip ]
+				ELSE:
+					[ skip ]
+2. Industry produces food
+	1. IF [ power, money > food production cost ]:
+		THEN [ industry produces food ]
+		ELSE [ skip ]
+		- sure we want power to be part of production cost ???
+	2. IF [ industry produced food ]:
+		THEN [ industry produces production pollution ]
+		ELSE [ industry produces idle pollution ]
+		- random pollution ???
+	3. IF [ industry produced food ]:
+		THEN [ industry produces random money ]
+		ELSE [ skip ]
+		- simulates successful / failed product
+		- allows possibility to lose money, avoids infinite money positive
+		  feedback loop
+3. Policy RNG is adjusted
+	1. IF [ industry produced power ] AND [ industry produced food ]:
+		THEN [ policy rng += sufficient power, food policy rng impact ]
+		ELSE:
+			IF [ industry produced power ]:
+				THEN:
+					[ policy rng += sufficient power policy rng impact ] AND
+					[ policy rng -= food scarcity policy rng impact ]
+				ELSE:
+					[ policy rng -= power, food scarcity policy rng impact ]
+4. Player chooses policy
+	1. Generate 3 policies randomly with bias according to policy rng
+		- we gonna find a **** ton of hidden stats we need to support the
+		  charade of the visible ones :)
+	2. Player can pick a policy or reject all
+5. Reputation is adjusted
+	1. IF [ player accepts popular policy or rejects unpopular policy ]:
+		THEN [ [ ??? ] chance to increase popularity ]
+		ELSE:
+			IF [ player rejects unpopular policy or accepts unpopular policy ]:
+				THEN [ [ ??? ] chance to decrease popularity ]
+	- we gonna be here for a while to document the mess we made (it turns out
+	  the number of edges in a n-vertex gets plenty real quick :)
+	- this is scope and feature creep for now but hooooooooo boy does desg get
+	  to have fun with various ending scenarios as achievements
+
+every policy got:
+	- desc (story)
+	- cash cost
+	- policy popularity
+	- stats affected (follow the consequence chain ???)
+
+policy design guide / effect category / idk anymor:
+- Minor - medium thing to ppl:
+	- 3% - 5%
+- Medium thing to ppl:
+	- 6% - 7%
+- Medium - major thing to ppl:
+	- 8% - 10%
+
+policies we have have:
+- RobbinFood:
+	- "A series of thefts have been reported recently. Curiously, the stolen
+	  goods consists exclusively of food. Police investigations report the
+	  job was not particularly professional, but enough to stump them. This
+	  bill will authorize the hiring of additional personel to aid the theft
+	  investigations."
+	- 500
+		- local issue, cheap to address
+	- 60%
+	- Agree:
+		- reputation += 5%
+		- money -= 1000
+			- it costs money to hire
+		- ppl happy they dont gotta worry about food theft again
+	- Disagree:
+		- reputation -= 5%
+		- food -= 3
+		- minor inconvenience, but ppl will remember the betrayal :(
+	- should agree
+	- this one is a simple one, to give player a great start experience
+- PetroBigBro:
+	- "The fossil fuel industry is noticing the shift in attitude towards
+	  cleaner energy in the populace and is making anticipatory moves.
+	  Several of the largest oil companies are requesting an increase of
+	  oil price caps, potentially causing oil prices to soar to record high
+	  prices as they try to lose their stock while transitioning to the new
+	  markets. This bill will increase oil price caps to support companies
+	  while they transition."
+	- 2000
+		- lawyers + deal with central govt
+	- 50%
+	- Agree:
+		- reputation += 8%
+		- money += 5000
+		- pollution -= 3%
+		- most oil companies survive the transition just fine, ppl dont
+		  mind the higher price since it incentivizes transition
+	- Disagree:
+		- reputation += 3%
+		- industry -= 3%
+		- most oil companies survive the transition just fine, but some dont
+	- anything flies
+- RedGreenBurn
+	- "The sun shines in the bright blue sky. Unfortunately, it has spawned a
+	  bright red flame among the bright green leaves of the forest, causing
+	  massive damage to the environment. The central government is willing to
+	  aid, but a major part of the bill will still need to be footed by the
+	  local government. This bill will allow the formation of a joint
+	  firefighting force to deal with the forest fire."
+	- 2000
+	- 60%
+	- Agree:
+		- reputation += 5%
+		- money -= 5000
+		- pollution += 10%
+		- ppl dont mind spending a bit to care for the env
+	- Disagree:
+		- reputation -= 10%
+		- pollution += 30%
+		- widespread critcism for not doing more, thats a lot of pollution :)
+	- should agree
+- PlantGrant
+	- "Your city has been invited to participate in an international tree planting
+	  competition in a bid to promote the dire need of regeneration of forests
+	  around the world. A lot of people are excited about the competition. This
+	  bill will formally declare the city's participation in the competition."
+	- 2000
+		- joining an international thing is a thing for the central govt to do
+	- 50%
+	- Agree:
+		- reputation += 3%
+		- money -= 2000
+			- participation fee, tree seed costs, etc.
+		- pollution -= 8%
+		- we didnt win but ppl r glad to participate anyway
+		- critics fear the future of the trees tho, a lot of tree planting isnt
+		  followed by tree maintenance and the trees just die (legit thing irl)
+			- edu component :)
+	- Disagree:
+		- reputation -= 8%
+			- rather surprising for such a env progressive city to not join
+		- industry += 3%
+			- turns out they were preparing to join but since it got cancelled
+			  the spare resources can be used elsewhere
+		- pollution -= 5%
+			- so surprising that a few others ended up not joining as well
+		- ppl very disappointed they didnt end up joining
+- TreeToFood
+	- "A major player in the food industry is eager to expand operations and is
+	  requesting a forest-clearing permit, concluding that the forest was too
+	  small to be productive for logging operations despite massive protests by
+	  various environmental impact analysis experts. They claim the extra space
+	  would allow them to produce food for less money and more efficiently and
+	  are threatening to take their business elsewhere if not allowed to grow.
+	  This bill will grant the company a forest-clearing permit."
+	- 500
+		- local cheap
+	- 30%
+	- Agree:
+		- reputation -= 10%
+		- money += 5000
+			- company is willing to ~~bribe~~ pay permit fees
+		- industry += 10%
+		- pollution += 8%
+		- food prod successful but ppl extremely disappointed
+	- Disagree:
+		- reputation += 10%
+		- money -= 2000
+		- food -= 5
+		- industry -= 10%
+		- after a long legal battle we lost and company moved anyway just to
+		  spite our city but ppl appreciated us defending their cause and
+		  donations covered some of the loss
+	- nahloh susah kan :D
+- NoWayHome
+	- "A neighborhood complained that the roads in their neighborhood have
+	  fallen into disrepair. A few people have taken the issue to social media
+	  and pressing the city's Public Infrastructures Department to take action,
+	  however the department advised that the repairs will require a section of
+	  a nearby river to be reclaimed, potentially destroying the habitat of
+	  various local fishes and reducing the amount of water that flows
+	  downstream. This bill will authorize road repairs for the neighborhood."
+	- 500
+	- 50%
+		- some say city gotta repair public infrastructure, some say the
+		  environment is more important
+		- very controversial :)
+	- Agree:
+		- reputation += 5%
+		- money -= 1000
+		- pollution += 3%
+	- Disagree:
+		- reputation += 3%
+		- industry -= 3%
+	- should agree
