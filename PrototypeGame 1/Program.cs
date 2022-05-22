@@ -6,20 +6,26 @@ namespace PrototypeGame_1
     {
         static void Main(string[] args)
         {
+            // For Balancing
             int moneyAmount = 3000;
             int industryAmount = 10;
             int reputationAmount = 100;
             int pollutionAmount = 0;
             int powerAmount = 0;
+            int maxPowerAmount = 15;
+            int policyCooldownIfNotChosen = 2;
+
+            // Don't Change!
             int tempPowerAmount = 0;
             int policyRng = 0;
             int turn = 1;
-
-            int maxPowerAmount = 15;
-
+            int numberOfPolicyThisTurn = 0;
+            string policyAccept = "0";
+            string policyChosen;
             bool gameOver = false;
             bool powerProduced = false;
             bool foodProduced = false;
+            bool policyValid = false;
 
             // Policy Lists
             Policy[] policies = new Policy[]
@@ -33,9 +39,11 @@ namespace PrototypeGame_1
                     0,
                     0,
                     0,
+                    0,
                     5,
                     0,
                     -3,
+                    0,
                     0,
                     0,
                     5
@@ -47,9 +55,11 @@ namespace PrototypeGame_1
                     50,
                     5000,
                     0,
+                    0,
                     -3,
                     0,
                     8,
+                    0,
                     0,
                     0,
                     0,
@@ -63,9 +73,11 @@ namespace PrototypeGame_1
                     60,
                     -5000,
                     0,
+                    0,
                     10,
                     0,
                     5,
+                    0,
                     0,
                     0,
                     30,
@@ -79,9 +91,11 @@ namespace PrototypeGame_1
                     50,
                     -2000,
                     0,
+                    0,
                     -8,
                     0,
                     3,
+                    0,
                     0,
                     0,
                     -5,
@@ -95,11 +109,13 @@ namespace PrototypeGame_1
                     30,
                     5000,
                     0,
+                    0,
                     8,
                     10,
                     -10,
                     -2000,
                     -5,
+                    0,
                     0,
                     -10,
                     10
@@ -111,9 +127,11 @@ namespace PrototypeGame_1
                     50,
                     -1000,
                     0,
+                    0,
                     3,
                     0,
                     5,
+                    0,
                     0,
                     0,
                     0,
@@ -122,13 +140,15 @@ namespace PrototypeGame_1
                 ),
             };
 
+            Policy[] availablePolicies = new Policy[policies.Length];
+
             Power[] powers = new Power[]
             {
-                new Power("Oil", 400, 2, 8),
-                new Power("Tidal", 700, 1, 2),
+                new Power("Oil", 250, 2, 8),
+                new Power("Tidal", 500, 1, 3),
             };
 
-            Food food = new Food(2, 800, 10, 3);
+            Food food = new Food(2, 600, 10, 3);
 
             Random random = new Random();
 
@@ -137,6 +157,9 @@ namespace PrototypeGame_1
             {
                 // Reseting Variables
                 policyRng = 0;
+
+                // Reduce Policy Cooldown
+                Policy.reduceTurnCooldown(policies);
 
                 // Count Power
                 foreach (var power in powers)
@@ -169,21 +192,7 @@ namespace PrototypeGame_1
                     food.playerAmount += food.foodProduced;
                     moneyAmount -= food.moneyCost;
 
-                    for(int i = 0; i < food.powerCost; i++)
-                    {
-                        bool powerReduced = false;
-
-                        while(powerReduced == false)
-                        {
-                            var powerToUse = random.Next(0, powers.Length);
-
-                            if(powers[powerToUse].playerAmount > 0)
-                            {
-                                powers[powerToUse].playerAmount -= 1;
-                                powerReduced = true;
-                            }
-                        }
-                    }
+                    Power.AddPower(powers, food.powerCost * -1);
 
                     powerAmount -= food.powerCost;
                     moneyAmount += random.Next(500, 1000);
@@ -208,10 +217,25 @@ namespace PrototypeGame_1
                     policyRng -= 5; // -2 from power and -3 from food
                 }
 
+                // Get Random Policy
+                availablePolicies = Policy.getAvailablePolicies(policies);
+
+                if(availablePolicies.Length >= 3)
+                {
+                    availablePolicies = Policy.getRandomPolicies(availablePolicies, 3);
+                    numberOfPolicyThisTurn = 3;
+                }
+                else
+                {
+                    availablePolicies = Policy.getRandomPolicies(availablePolicies, availablePolicies.Length);
+                    numberOfPolicyThisTurn = availablePolicies.Length;
+                }
+
+
                 // Display Current Resources
+                Console.WriteLine($"\nMonth {turn}");
+                Console.WriteLine("Resources Amount:");
                 Console.WriteLine($"Power: {powerAmount}");
-                Console.WriteLine($"Oil: {powers[0].playerAmount}");
-                Console.WriteLine($"Tidal: {powers[1].playerAmount}");
                 Console.WriteLine($"Food: {food.playerAmount}");
                 Console.WriteLine($"Money: {moneyAmount}");
                 Console.WriteLine($"Industry: {industryAmount}");
@@ -219,7 +243,80 @@ namespace PrototypeGame_1
                 Console.WriteLine($"Pollution: {pollutionAmount}");
                 Console.WriteLine($"Policy RNG: {policyRng}");
 
-                Console.ReadLine();
+                do
+                {
+                    // Display Policies
+                    Console.WriteLine("\nChoose Policy:");
+                    for (int i = 0; i < numberOfPolicyThisTurn; i++)
+                    {
+                        Console.WriteLine($"Policy #{i + 1}: {availablePolicies[i].title} | Cost: {availablePolicies[i].cashCost}");
+                    }
+                    Console.WriteLine($"{numberOfPolicyThisTurn + 1}: Skip Turn");
+
+                    // Player Choose Policy
+                    do
+                    {
+                        Console.WriteLine("\nPlease Select Policy you want to implement:");
+                        policyChosen = Console.ReadLine();
+                    } while (Convert.ToInt32(policyChosen) < 1 || Convert.ToInt32(policyChosen) > numberOfPolicyThisTurn + 1);
+
+                    if(Convert.ToInt32(policyChosen) != numberOfPolicyThisTurn + 1 && moneyAmount < availablePolicies[Convert.ToInt32(policyChosen) - 1].cashCost)
+                    {
+                        Console.WriteLine("Not Enough Money to Implement This Policy!");
+                        policyValid = false;
+                    }
+                    else
+                    {
+                        policyValid = true;
+                    }
+
+                } while (policyValid = false);
+
+                // Policy Cooldown Adjust
+                for (int i = 0; i < numberOfPolicyThisTurn; i++)
+                {
+                    if(i+1 == Convert.ToInt32(policyChosen))
+                    {
+                        availablePolicies[i].cooldown = 3;
+                    }
+                    else
+                    {
+                        availablePolicies[i].cooldown = 1;
+                    }
+                }
+
+                if(Convert.ToInt32(policyChosen) != numberOfPolicyThisTurn + 1)
+                {
+                    // Accept / Reject Policy
+                    do
+                    {
+                        Console.WriteLine($"Accept {availablePolicies[Convert.ToInt32(policyChosen) - 1].title}?");
+                        Console.WriteLine("1 = Accept | 0 = Reject:");
+                        policyAccept = Console.ReadLine();
+                    } while (Convert.ToInt32(policyAccept) < 0 || Convert.ToInt32(policyAccept) > 1);
+
+                    // Policy Takes Effect
+                    if(Convert.ToInt32(policyAccept) == 1)
+                    {
+                        moneyAmount += availablePolicies[Convert.ToInt32(policyChosen) - 1].cashEffectAccept;
+                        food.playerAmount += availablePolicies[Convert.ToInt32(policyChosen) - 1].foodEffectAccept;
+                        industryAmount += availablePolicies[Convert.ToInt32(policyChosen) - 1].industryEffectAccept;
+                        pollutionAmount += availablePolicies[Convert.ToInt32(policyChosen) - 1].pollutionEffectAccept;
+                        Power.AddPower(powers, availablePolicies[Convert.ToInt32(policyChosen) - 1].powerEffectAccept);
+                        reputationAmount += availablePolicies[Convert.ToInt32(policyChosen) - 1].reputationEffectAccept;
+                    }
+                    else if(Convert.ToInt32(policyAccept) == 0)
+                    {
+                        moneyAmount += availablePolicies[Convert.ToInt32(policyChosen) - 1].cashEffectReject;
+                        food.playerAmount += availablePolicies[Convert.ToInt32(policyChosen) - 1].foodEffectReject;
+                        industryAmount += availablePolicies[Convert.ToInt32(policyChosen) - 1].industryEffectReject;
+                        pollutionAmount += availablePolicies[Convert.ToInt32(policyChosen) - 1].pollutionEffectReject;
+                        Power.AddPower(powers, availablePolicies[Convert.ToInt32(policyChosen) - 1].powerEffectReject);
+                        reputationAmount += availablePolicies[Convert.ToInt32(policyChosen) - 1].reputationEffectReject;
+                    }
+
+                    moneyAmount -= availablePolicies[Convert.ToInt32(policyChosen) - 1].cashCost;
+                }
 
                 turn++;
             } while (gameOver == false);

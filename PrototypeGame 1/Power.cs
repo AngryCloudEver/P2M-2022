@@ -44,5 +44,47 @@ namespace PrototypeGame_1
 
             return chosenPower;
         }
+
+        static public void AddPower(Power[] powers, int powerAmount)
+        {
+            Random random = new Random();
+
+            if(powerAmount > 0)
+            {
+                for (int i = 0; i < powerAmount; i++)
+                {
+                    bool powerReduced = false;
+
+                    while (powerReduced == false)
+                    {
+                        var powerToUse = random.Next(0, powers.Length);
+
+                        if (powers[powerToUse].playerAmount > 0)
+                        {
+                            powers[powerToUse].playerAmount += 1;
+                            powerReduced = true;
+                        }
+                    }
+                }
+            }
+            else if(powerAmount < 0)
+            {
+                for (int i = 0; i > powerAmount; i--)
+                {
+                    bool powerReduced = false;
+
+                    while (powerReduced == false)
+                    {
+                        var powerToUse = random.Next(0, powers.Length);
+
+                        if (powers[powerToUse].playerAmount > 0)
+                        {
+                            powers[powerToUse].playerAmount -= 1;
+                            powerReduced = true;
+                        }
+                    }
+                }
+            }
+        }
     }
 }
