@@ -20,6 +20,7 @@ namespace PrototypeGame_1
             int policyRng = 0;
             int turn = 1;
             int numberOfPolicyThisTurn = 0;
+            int popularityRng = 0;
             string policyAccept = "0";
             string policyChosen;
             bool gameOver = false;
@@ -316,6 +317,26 @@ namespace PrototypeGame_1
                     }
 
                     moneyAmount -= availablePolicies[Convert.ToInt32(policyChosen) - 1].cashCost;
+
+                    // Reputation From Popularity
+                    if(availablePolicies[Convert.ToInt32(policyChosen) - 1].popularity >= 50 && Convert.ToInt32(policyAccept) == 1)
+                    {
+                        popularityRng = random.Next(5, 15);
+                    }
+                    else if (availablePolicies[Convert.ToInt32(policyChosen) - 1].popularity >= 50 && Convert.ToInt32(policyAccept) == 0)
+                    {
+                        popularityRng = random.Next(-15, -5);
+                    }
+                    else if(availablePolicies[Convert.ToInt32(policyChosen) - 1].popularity < 50 && Convert.ToInt32(policyAccept) == 1)
+                    {
+                        popularityRng = random.Next(-15, -5);
+                    }
+                    else if (availablePolicies[Convert.ToInt32(policyChosen) - 1].popularity < 50 && Convert.ToInt32(policyAccept) == 0)
+                    {
+                        popularityRng = random.Next(5, 15);
+                    }
+
+                    reputationAmount += popularityRng;
                 }
 
                 turn++;
