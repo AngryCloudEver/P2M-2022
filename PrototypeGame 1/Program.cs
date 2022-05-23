@@ -7,19 +7,20 @@ namespace PrototypeGame_1
         static void Main(string[] args)
         {
             // For Balancing
-            int moneyAmount = 3000;
-            int industryAmount = 10;
-            int reputationAmount = 100;
-            int pollutionAmount = 0;
-            int maxPowerAmount = 15;
-            int policyCooldownIfNotChosen = 2;
-            int minMoneyGainAfterProducingFood = 500;
-            int maxMoneyGainAfterProducingFood = 1000;
             Power[] powers = new Power[]
             {
                 new Power("Oil", 250, 2, 8),
                 new Power("Tidal", 500, 1, 3),
             };
+            Money money = new Money(3000);
+            Industry industry = new Industry(10);
+            Food food = new Food(2, 600, 10, 3);
+            Reputation reputation = new Reputation(100);
+            Pollution pollution = new Pollution(0);
+            int maxPowerAmount = 15;
+            int policyCooldownIfNotChosen = 2;
+            int minMoneyGainAfterProducingFood = 500;
+            int maxMoneyGainAfterProducingFood = 1000;
 
             // Don't Change!
             int powerAmount = 0;
@@ -152,7 +153,6 @@ namespace PrototypeGame_1
             Policy[] availablePolicies = new Policy[policies.Length];
 
 
-            Food food = new Food(2, 600, 10, 3);
 
             Random random = new Random();
 
@@ -172,9 +172,9 @@ namespace PrototypeGame_1
                 }
 
                 // Check Money Cap
-                if(moneyAmount < 0)
+                if(money.playerAmount < 0)
                 {
-                    moneyAmount = 0;
+                    money.playerAmount = 0;
                 }
 
                 powerAmount = tempPowerAmount;
@@ -183,7 +183,7 @@ namespace PrototypeGame_1
                 // Produce Power
                 while (powerAmount < maxPowerAmount)
                 {
-                    var chosenPower = Power.selectPowerToUse(powers, moneyAmount);
+                    var chosenPower = Power.selectPowerToUse(powers, money.playerAmount);
                     
                     if(chosenPower == null)
                     {
@@ -192,22 +192,22 @@ namespace PrototypeGame_1
 
                     powerAmount++;
                     chosenPower.playerAmount++;
-                    moneyAmount -= chosenPower.cost;
-                    pollutionAmount += chosenPower.pollution;
+                    money.playerAmount -= chosenPower.cost;
+                    pollution.playerAmount += chosenPower.pollution;
                 }
 
                 // Produce Food
-                if(powerAmount >= food.powerCost && moneyAmount >= food.moneyCost)
+                if(powerAmount >= food.powerCost && money.playerAmount >= food.moneyCost)
                 {
                     food.playerAmount += food.foodProduced;
-                    moneyAmount -= food.moneyCost;
+                    money.playerAmount -= food.moneyCost;
 
                     Power.AddPower(powers, food.powerCost * -1);
 
                     powerAmount -= food.powerCost;
-                    moneyAmount += random.Next(minMoneyGainAfterProducingFood, maxMoneyGainAfterProducingFood);
+                    money.playerAmount += random.Next(minMoneyGainAfterProducingFood, maxMoneyGainAfterProducingFood);
                 }
-                pollutionAmount += random.Next(1, 4);
+                pollution.playerAmount += random.Next(1, 4);
 
                 // Adjusting Policy RNG
                 if(powerAmount >= 2 && food.playerAmount >= 3)
@@ -247,10 +247,10 @@ namespace PrototypeGame_1
                 Console.WriteLine("Resources Amount:");
                 Console.WriteLine($"Power: {powerAmount}");
                 Console.WriteLine($"Food: {food.playerAmount}");
-                Console.WriteLine($"Money: {moneyAmount}");
-                Console.WriteLine($"Industry: {industryAmount}");
-                Console.WriteLine($"Reputation: {reputationAmount}");
-                Console.WriteLine($"Pollution: {pollutionAmount}");
+                Console.WriteLine($"Money: {money.playerAmount}");
+                Console.WriteLine($"Industry: {industry.playerAmount}");
+                Console.WriteLine($"Reputation: {reputation.playerAmount}");
+                Console.WriteLine($"Pollution: {pollution.playerAmount}");
                 Console.WriteLine($"Policy RNG: {policyRng}");
 
                 do
@@ -278,7 +278,7 @@ namespace PrototypeGame_1
                         }
                     } while (policyChosen < 1 || policyChosen > numberOfPolicyThisTurn + 1);
 
-                    if(policyChosen != numberOfPolicyThisTurn + 1 && moneyAmount < availablePolicies[policyChosen - 1].cashCost)
+                    if(policyChosen != numberOfPolicyThisTurn + 1 && money.playerAmount < availablePolicies[policyChosen - 1].cashCost)
                     {
                         Console.WriteLine("Not Enough Money to Implement This Policy!");
                         policyValid = false;
@@ -324,24 +324,24 @@ namespace PrototypeGame_1
                     // Policy Takes Effect
                     if(policyAccept == 1)
                     {
-                        moneyAmount += availablePolicies[policyChosen - 1].cashEffectAccept;
+                        money.playerAmount += availablePolicies[policyChosen - 1].cashEffectAccept;
                         food.playerAmount += availablePolicies[policyChosen - 1].foodEffectAccept;
-                        industryAmount += availablePolicies[policyChosen - 1].industryEffectAccept;
-                        pollutionAmount += availablePolicies[policyChosen - 1].pollutionEffectAccept;
+                        industry.playerAmount += availablePolicies[policyChosen - 1].industryEffectAccept;
+                        pollution.playerAmount += availablePolicies[policyChosen - 1].pollutionEffectAccept;
                         Power.AddPower(powers, availablePolicies[policyChosen - 1].powerEffectAccept);
-                        reputationAmount += availablePolicies[policyChosen - 1].reputationEffectAccept;
+                        reputation.playerAmount += availablePolicies[policyChosen - 1].reputationEffectAccept;
                     }
                     else if(policyAccept == 0)
                     {
-                        moneyAmount += availablePolicies[policyChosen - 1].cashEffectReject;
+                        money.playerAmount += availablePolicies[policyChosen - 1].cashEffectReject;
                         food.playerAmount += availablePolicies[policyChosen - 1].foodEffectReject;
-                        industryAmount += availablePolicies[policyChosen - 1].industryEffectReject;
-                        pollutionAmount += availablePolicies[policyChosen - 1].pollutionEffectReject;
+                        industry.playerAmount += availablePolicies[policyChosen - 1].industryEffectReject;
+                        pollution.playerAmount += availablePolicies[policyChosen - 1].pollutionEffectReject;
                         Power.AddPower(powers, availablePolicies[policyChosen - 1].powerEffectReject);
-                        reputationAmount += availablePolicies[policyChosen - 1].reputationEffectReject;
+                        reputation.playerAmount += availablePolicies[policyChosen - 1].reputationEffectReject;
                     }
 
-                    moneyAmount -= availablePolicies[policyChosen - 1].cashCost;
+                    money.playerAmount -= availablePolicies[policyChosen - 1].cashCost;
 
                     // Reputation From Popularity
                     if(availablePolicies[policyChosen - 1].popularity >= 50 && policyAccept == 1)
@@ -361,7 +361,7 @@ namespace PrototypeGame_1
                         popularityRng = random.Next(5, 15);
                     }
 
-                    reputationAmount += popularityRng;
+                    reputation.playerAmount += popularityRng;
                 }
 
                 turn++;
@@ -385,12 +385,12 @@ namespace PrototypeGame_1
                 if(restartGame == 1)
                 {
                     // For Balancing
-                    moneyAmount = 3000;
-                    industryAmount = 10;
-                    reputationAmount = 100;
-                    pollutionAmount = 0;
+                    pollution.playerAmount = 0;
+                    Money.resetMoney(money);
                     Power.resetPower(powers);
                     Food.resetFood(food);
+                    Industry.resetIndustry(industry);
+                    Reputation.resetReputation(reputation);
 
                     // Don't Change!
                     turn = 1;
