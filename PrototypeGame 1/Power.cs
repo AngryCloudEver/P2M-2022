@@ -9,12 +9,14 @@ namespace PrototypeGame_1
         public int pollution;
         public int playerAmount;
 
+        private int defaultPlayerAmount;
+
         public Power(string powerName, int powerCost, int powerPollution, int powerPlayerAmount)
         {
             name = powerName;
             cost = powerCost;
             pollution = powerPollution;
-            playerAmount = powerPlayerAmount;
+            playerAmount = defaultPlayerAmount = powerPlayerAmount;
         }
 
         static public Power selectPowerToUse(Power[] powers, int money)
@@ -84,6 +86,14 @@ namespace PrototypeGame_1
                         }
                     }
                 }
+            }
+        }
+
+        static public void resetPower(Power[] powers)
+        {
+            foreach(var power in powers)
+            {
+                power.playerAmount = power.defaultPlayerAmount;
             }
         }
     }
