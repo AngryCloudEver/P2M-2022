@@ -23,8 +23,10 @@ namespace PrototypeGame_1
         {
             Power chosenPower = null;
             int minPollution = -1;
+            Random rd = new Random();
+            int RNG = 0;
 
-            foreach(var power in powers)
+            foreach (var power in powers)
             {
                 if(minPollution == -1)
                 {
@@ -42,6 +44,13 @@ namespace PrototypeGame_1
                         chosenPower = power;
                     }
                 }
+            }
+
+            RNG = rd.Next(0, powers.Length + 2);
+
+            if(RNG < powers.Length && powers[RNG] != chosenPower)
+            {
+                return powers[RNG];
             }
 
             return chosenPower;
