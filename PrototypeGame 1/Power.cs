@@ -105,5 +105,27 @@ namespace PrototypeGame_1
                 power.playerAmount = power.defaultPlayerAmount;
             }
         }
+
+        static public int getCostMin(Power[] powers)
+        {
+            int min = -1;
+
+            foreach(var power in powers)
+            {
+                if(min == -1)
+                {
+                    min = power.cost;
+                }
+                else
+                {
+                    if(power.cost < min)
+                    {
+                        min = power.cost;
+                    }
+                }
+            }
+
+            return min;
+        }
     }
 }

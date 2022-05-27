@@ -57,7 +57,7 @@ namespace PrototypeGame_1
                     0,
                     0,
                     0,
-                    5
+                    -5
                 ),
                 new Policy(
                     "PetroBigBro",
@@ -177,6 +177,12 @@ namespace PrototypeGame_1
                     money.playerAmount = 0;
                 }
 
+                // Check Pollution Cap
+                if (pollution.playerAmount < 0)
+                {
+                    pollution.playerAmount = 0;
+                }
+
                 powerAmount = tempPowerAmount;
                 tempPowerAmount = 0;
 
@@ -188,7 +194,7 @@ namespace PrototypeGame_1
                     
                     if(chosenPower == null)
                     {
-                        Console.WriteLine($"Insufficient amount of money! {chosenPower.cost} amount of money required! No power was produced! (Current Money: {money.playerAmount})");
+                        Console.WriteLine($"Insufficient amount of money! {Power.getCostMin(powers)} amount of money required! No power was produced! (Current Money: {money.playerAmount})");
                         break;
                     }
 
@@ -198,6 +204,11 @@ namespace PrototypeGame_1
                     pollution.playerAmount += chosenPower.pollution;
 
                     Console.WriteLine($"Power: {powerAmount} (+1) | Money: {money.playerAmount} (-{chosenPower.cost}) | Pollution: {pollution.playerAmount} (+{chosenPower.pollution})");
+                }
+                
+                if(powerAmount == maxPowerAmount)
+                {
+                    Console.WriteLine("Max power reached!");
                 }
 
                 // Produce Food
@@ -227,7 +238,7 @@ namespace PrototypeGame_1
                 }
                 randomRng = random.Next(1, 4);
                 pollution.playerAmount += randomRng;
-                Console.WriteLine($"Pollution increased because of industry. Pollution: {pollution.playerAmount} (+{randomRng})");
+                Console.WriteLine($"\nPollution increased because of industry. Pollution: {pollution.playerAmount} (+{randomRng})");
 
 
                 // Adjusting Policy RNG
