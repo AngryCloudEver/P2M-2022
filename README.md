@@ -25,7 +25,7 @@ Method 2: via exe
 2. Double-click the file "PrototypeGame 1.exe", which is located inside folder "netcoreapps3.1"
 
 ## Editing Data Values (for Game Designers)<br/>
-Navigate to C:\Unity Projects\P2M-2022\PrototypeGame 1\bin\Debug\netcoreapp3.1 <br/>
+Navigate to \P2M-2022\PrototypeGame 1\bin\Debug\netcoreapp3.1 <br/>
 
 `power.txt` <br/>
 Format: (string powerName, int powerCost, int powerPollution, int powerPlayerAmount) <br/>
