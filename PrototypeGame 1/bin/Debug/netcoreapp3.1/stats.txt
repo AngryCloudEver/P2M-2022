@@ -1,0 +1,8 @@
+money,5000
+industry,10
+reputation,100
+pollution,0
+maxPowerAmount,15
+policyCooldownIfNotChosen,2
+minMoneyGainAfterProducingFood,500
+maxMoneyGainAfterProducingFood,1000

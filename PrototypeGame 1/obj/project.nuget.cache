@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "2ip70+WrbCd5SjpnpOJMhSG5OWufBG8G4Sq4UTzeTweGThj5bJ4GLISrN3oI29wKA2jOa5435UYkARzWKeDR1w==",
+  "dgSpecHash": "bdiySmt22P5ki92dhg4jzJv6xoKl/Vq7zL5xvYG6wA0wiAx5aVWdsiiyuvJAYyY8Us1K031aNF1fn2Yrz6oNEw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\User\\OneDrive - Bina Nusantara University\\BGDC\\P2M\\cli code\\PrototypeGame 1\\PrototypeGame 1\\PrototypeGame 1.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "C:\\Unity Projects\\P2M-2022-main\\PrototypeGame 1\\PrototypeGame 1.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Harris\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.1.25\\microsoft.netcore.app.host.win-x64.3.1.25.nupkg.sha512"
+  ],
   "logs": []
 }
