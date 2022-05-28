@@ -34,9 +34,8 @@ Format: (int foodPowerCost, int foodMoneyCost, int foodPlayerAmount, int foodPro
 `stats.txt` <br/>
 Format: (string title, int value)<br/>
 `policy.txt` <br/>
-Format: (string title, int cashCost, int popularity, int cashEffectAccept, int foodEffectAccept, int powerEffectAccept, int pollutionEffectAccept, int industryEffectAccept, int reputationEffectAccept, int cashEffectReject, int foodEffectReject, int powerEffectReject, int pollutionEffectReject, int industryEffectReject, int reputationEffectReject)
+Format: (string title, int cashCost, int popularity, int cashEffectAccept, int foodEffectAccept, int powerEffectAccept, int pollutionEffectAccept, int industryEffectAccept, int reputationEffectAccept, int cashEffectReject, int foodEffectReject, int powerEffectReject, int pollutionEffectReject, int industryEffectReject, int reputationEffectReject) <br/>
 `policyDescription.txt` <br/>
 Format: (string title, string description) <br/>
 
-**Note: DO NOT change any name/title and the amount of data per line as well as comma seperators** <br/> <br/>
-Each stat/object's value is defined in a single line <br/>
+**Note: DO NOT change any name/title and the amount of data per line as well as comma seperators**.Each stat/object's value is defined in a single line <br/>
