@@ -8,19 +8,19 @@
     ".NETCoreApp,Version=v3.1": []
   },
   "packageFolders": {
-    "C:\\Users\\User\\.nuget\\packages\\": {}
+    "C:\\Users\\Harris\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\User\\OneDrive - Bina Nusantara University\\BGDC\\P2M\\cli code\\PrototypeGame 1 Main\\PrototypeGame 1\\PrototypeGame 1.csproj",
+      "projectUniqueName": "C:\\Unity Projects\\P2M-2022\\PrototypeGame 1\\PrototypeGame 1.csproj",
       "projectName": "PrototypeGame 1",
-      "projectPath": "C:\\Users\\User\\OneDrive - Bina Nusantara University\\BGDC\\P2M\\cli code\\PrototypeGame 1 Main\\PrototypeGame 1\\PrototypeGame 1.csproj",
-      "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\User\\OneDrive - Bina Nusantara University\\BGDC\\P2M\\cli code\\PrototypeGame 1 Main\\PrototypeGame 1\\obj\\",
+      "projectPath": "C:\\Unity Projects\\P2M-2022\\PrototypeGame 1\\PrototypeGame 1.csproj",
+      "packagesPath": "C:\\Users\\Harris\\.nuget\\packages\\",
+      "outputPath": "C:\\Unity Projects\\P2M-2022\\PrototypeGame 1\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Harris\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -28,7 +28,6 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "http://202.58.172.152/binus_ws_nuget-DevOPS/nuget": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -56,12 +55,18 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.NETCore.App.Host.win-x64",
+            "version": "[3.1.25, 3.1.25]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.404\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.408\\RuntimeIdentifierGraph.json"
       }
     }
   }

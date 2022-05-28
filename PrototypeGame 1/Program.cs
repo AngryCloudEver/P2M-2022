@@ -1,26 +1,97 @@
 ﻿using System;
+using System.Text;
+using System.IO;
 
+using System.Collections.Generic;
+using System.Collections;
 namespace PrototypeGame_1
 {
     class Program
     {
+        
         static void Main(string[] args)
         {
-            // For Balancing
+            // Access text file
+            const string powerFile = "power.txt";
+            const string foodFile = "food.txt";
+            const string statFile = "stats.txt";
+            const string policyFile = "policy.txt";
+            const string policyDescFile = "policyDescription.txt";
+            StreamReader powerReader = new StreamReader(powerFile);
+            StreamReader foodReader = new StreamReader(foodFile);
+            StreamReader statReader = new StreamReader(statFile);
+            StreamReader policyReader = new StreamReader(policyFile);
+            StreamReader descriptionReader = new StreamReader(policyDescFile);
+            // Create dictionary to store key value data from text file
+            Dictionary<string, int[]> powerDictionary = new Dictionary<string, int[]>();
+            Dictionary<string, int> statDictionary = new Dictionary<string, int>();
+            List<int> foodArray = new List<int>();
+            Dictionary<string, List<int>> policyDictionary = new Dictionary<string, List<int>>();
+            Dictionary<string, string> descriptionDictionary = new Dictionary<string, string>();
+            // Store value from text file to created dictionaries and list
+            string line;
+            while ((line = powerReader.ReadLine()) != null)
+            {
+                string[] srArray = line.Split(',');
+                int[] powerInt = { int.Parse(srArray[1]), int.Parse(srArray[2]), int.Parse(srArray[3]) };
+                powerDictionary.Add(srArray[0], powerInt);
+            }
+            while ((line = foodReader.ReadLine()) != null)
+            {
+                string[] srArray = line.Split(',');
+                foodArray.Add(int.Parse(srArray[0]));
+                foodArray.Add(int.Parse(srArray[1]));
+                foodArray.Add(int.Parse(srArray[2]));
+                foodArray.Add(int.Parse(srArray[3]));
+            }
+            while ((line = statReader.ReadLine()) != null)
+            {
+                string[] srArray = line.Split(',');
+                statDictionary.Add(srArray[0], int.Parse(srArray[1]));
+            }
+            while ((line = policyReader.ReadLine()) != null)
+            {
+                string[] srArray = line.Split(',');
+                List<int> srList = new List<int>();
+                int i = 0;
+                foreach (string s in srArray)
+                {
+                    if (i != 0)
+                    {
+                        srList.Add(int.Parse(s));
+                    }
+                    i++;
+                }
+                policyDictionary.Add(srArray[0], srList);
+            }
+            while ((line = descriptionReader.ReadLine()) != null)
+            {
+                string[] srArray = line.Split(',');
+                descriptionDictionary.Add(srArray[0], srArray[1]);
+            }
+            // Declare stat values based on  value from dictionary and list
+
             Power[] powers = new Power[]
             {
-                new Power("Oil", 250, 2, 10),
-                new Power("Tidal", 500, 1, 3),
+                new Power("Oil",powerDictionary["Oil"][0],powerDictionary["Oil"][1], powerDictionary["Oil"][2]),
+                new Power("Tidal",powerDictionary["Tidal"][0],powerDictionary["Tidal"][1],powerDictionary["Tidal"][2])
+
             };
-            Money money = new Money(3000);
-            Industry industry = new Industry(10);
-            Food food = new Food(2, 600, 10, 3);
-            Reputation reputation = new Reputation(100);
-            Pollution pollution = new Pollution(0);
-            int maxPowerAmount = 15;
-            int policyCooldownIfNotChosen = 2;
-            int minMoneyGainAfterProducingFood = 500;
-            int maxMoneyGainAfterProducingFood = 1000;
+            Food food = new Food(foodArray[0], foodArray[1], foodArray[2], foodArray[3]);
+            Money money = new Money(statDictionary["money"]);
+            Industry industry = new Industry(statDictionary["industry"]);
+            Reputation reputation = new Reputation(statDictionary["reputation"]);
+            Pollution pollution = new Pollution(statDictionary["pollution"]);
+            int maxPowerAmount = statDictionary["maxPowerAmount"];
+            int policyCooldownIfNotChosen = statDictionary["policyCooldownIfNotChosen"];
+            int minMoneyGainAfterProducingFood = statDictionary["minMoneyGainAfterProducingFood"];
+            int maxMoneyGainAfterProducingFood = statDictionary["maxMoneyGainAfterProducingFood"];
+
+            powerReader.Close();
+            foodReader.Close();
+            statReader.Close();
+            policyReader.Close();
+            descriptionReader.Close();
 
             // Don't Change!
             int powerAmount = 0;
@@ -41,113 +112,113 @@ namespace PrototypeGame_1
             // Policy Lists
             Policy[] policies = new Policy[]
             {
-                new Policy(
-                    "RobbinFood",
-                    "A series of thefts have been reported recently. Curiously, the stole goods consists exclusively of food. Police investigations report thejob was not particularly professional, but enough to stump them. This bill will authorize the hiring of additional personel to aid the theft investigations.",
-                    500,
-                    60,
-                    -1000,
-                    0,
-                    0,
-                    0,
-                    0,
-                    5,
-                    0,
-                    -3,
-                    0,
-                    0,
-                    0,
-                    -5
+                new Policy("RobbinFood",
+                    descriptionDictionary["RobbinFood"],
+                    policyDictionary["RobbinFood"][0],
+                    policyDictionary["RobbinFood"][1],
+                    policyDictionary["RobbinFood"][2],
+                    policyDictionary["RobbinFood"][3],
+                    policyDictionary["RobbinFood"][4],
+                    policyDictionary["RobbinFood"][5],
+                    policyDictionary["RobbinFood"][6],
+                    policyDictionary["RobbinFood"][7],
+                    policyDictionary["RobbinFood"][8],
+                    policyDictionary["RobbinFood"][9],
+                    policyDictionary["RobbinFood"][10],
+                    policyDictionary["RobbinFood"][11],
+                    policyDictionary["RobbinFood"][12],
+                    policyDictionary["RobbinFood"][13]
+
                 ),
                 new Policy(
                     "PetroBigBro",
-                    "The fossil fuel industry is noticing the shift in attitude towards cleaner energy in the populace and is making anticipatory moves. Several of the largest oil companies are requesting an increase of oil price caps, potentially causing oil prices to soar to record high prices as they try to lose their stock while transitioning to the new markets.This bill will increase oil price caps to support companies while they transition.",
-                    2000,
-                    50,
-                    5000,
-                    0,
-                    0,
-                    -3,
-                    0,
-                    8,
-                    0,
-                    0,
-                    0,
-                    0,
-                    -3,
-                    5
+                    descriptionDictionary["PetroBigBro"],
+                    policyDictionary["PetroBigBro"][0],
+                    policyDictionary["PetroBigBro"][1],
+                    policyDictionary["PetroBigBro"][2],
+                    policyDictionary["PetroBigBro"][3],
+                    policyDictionary["PetroBigBro"][4],
+                    policyDictionary["PetroBigBro"][5],
+                    policyDictionary["PetroBigBro"][6],
+                    policyDictionary["PetroBigBro"][7],
+                    policyDictionary["PetroBigBro"][8],
+                    policyDictionary["PetroBigBro"][9],
+                    policyDictionary["PetroBigBro"][10],
+                    policyDictionary["PetroBigBro"][11],
+                    policyDictionary["PetroBigBro"][12],
+                    policyDictionary["PetroBigBro"][13]
                 ),
                 new Policy(
                     "RedGreenBurn",
-                    "The sun shines in the bright blue sky. Unfortunately, it has spawned a bright red flame among the bright green leaves of the forest, causing massive damage to the environment. The central government is willing to aid, but a major part of the bill will still need to be footed by the local government. This bill will allow the formation of a joint firefighting force to deal with the forest fire.",
-                    2000,
-                    60,
-                    -5000,
-                    0,
-                    0,
-                    10,
-                    0,
-                    5,
-                    0,
-                    0,
-                    0,
-                    30,
-                    0,
-                    -10
+                    descriptionDictionary["RedGreenBurn"],
+                    policyDictionary["RedGreenBurn"][0],
+                    policyDictionary["RedGreenBurn"][1],
+                    policyDictionary["RedGreenBurn"][2],
+                    policyDictionary["RedGreenBurn"][3],
+                    policyDictionary["RedGreenBurn"][4],
+                    policyDictionary["RedGreenBurn"][5],
+                    policyDictionary["RedGreenBurn"][6],
+                    policyDictionary["RedGreenBurn"][7],
+                    policyDictionary["RedGreenBurn"][8],
+                    policyDictionary["RedGreenBurn"][9],
+                    policyDictionary["RedGreenBurn"][10],
+                    policyDictionary["RedGreenBurn"][11],
+                    policyDictionary["RedGreenBurn"][12],
+                    policyDictionary["RedGreenBurn"][13]
                 ),
                 new Policy(
                     "PlantGrant",
-                    "Your city has been invited to participate in an international tree planting competition in a bid to promote the dire need of regeneration of forests around the world. A lot of people are excited about the competition. This bill will formally declare the city's participation in the competition.",
-                    2000,
-                    50,
-                    -2000,
-                    0,
-                    0,
-                    -8,
-                    0,
-                    3,
-                    0,
-                    0,
-                    0,
-                    -5,
-                    3,
-                    -8
+                    descriptionDictionary["PlantGrant"],
+                    policyDictionary["PlantGrant"][0],
+                    policyDictionary["PlantGrant"][1],
+                    policyDictionary["PlantGrant"][2],
+                    policyDictionary["PlantGrant"][3],
+                    policyDictionary["PlantGrant"][4],
+                    policyDictionary["PlantGrant"][5],
+                    policyDictionary["PlantGrant"][6],
+                    policyDictionary["PlantGrant"][7],
+                    policyDictionary["PlantGrant"][8],
+                    policyDictionary["PlantGrant"][9],
+                    policyDictionary["PlantGrant"][10],
+                    policyDictionary["PlantGrant"][11],
+                    policyDictionary["PlantGrant"][12],
+                    policyDictionary["PlantGrant"][13]
                 ),
                 new Policy(
                     "TreeToFood",
-                    "A major player in the food industry is eager to expand operations and is requesting a forest-clearing permit, concluding that the forest was too small to be productive for logging operations despite massive protests by various environmental impact analysis experts. They claim the extra space would allow them to produce food for less money and more efficiently and are threatening to take their business elsewhere if not allowed to grow. This bill will grant the company a forest-clearing permit.",
-                    500,
-                    30,
-                    5000,
-                    0,
-                    0,
-                    8,
-                    10,
-                    -10,
-                    -2000,
-                    -5,
-                    0,
-                    0,
-                    -10,
-                    10
+                    descriptionDictionary["TreeToFood"],
+                    policyDictionary["TreeToFood"][0],
+                    policyDictionary["TreeToFood"][1],
+                    policyDictionary["TreeToFood"][2],
+                    policyDictionary["TreeToFood"][3],
+                    policyDictionary["TreeToFood"][4],
+                    policyDictionary["TreeToFood"][5],
+                    policyDictionary["TreeToFood"][6],
+                    policyDictionary["TreeToFood"][7],
+                    policyDictionary["TreeToFood"][8],
+                    policyDictionary["TreeToFood"][9],
+                    policyDictionary["TreeToFood"][10],
+                    policyDictionary["TreeToFood"][11],
+                    policyDictionary["TreeToFood"][12],
+                    policyDictionary["TreeToFood"][13]
                 ),
                 new Policy(
                     "NoWayHome",
-                    "A neighborhood complained that the roads in their neighborhood have fallen into disrepair. A few people have taken the issue to social media and pressing the city's Public Infrastructures Department to take action, however the department advised that the repairs will require a section of a nearby river to be reclaimed, potentially destroying the habitat of various local fishes and reducing the amount of water that flows downstream. This bill will authorize road repairs for the neighborhood.",
-                    500,
-                    50,
-                    -1000,
-                    0,
-                    0,
-                    3,
-                    0,
-                    5,
-                    0,
-                    0,
-                    0,
-                    0,
-                    -3,
-                    3
+                    descriptionDictionary["NoWayHome"],
+                    policyDictionary["NoWayHome"][0],
+                    policyDictionary["NoWayHome"][1],
+                    policyDictionary["NoWayHome"][2],
+                    policyDictionary["NoWayHome"][3],
+                    policyDictionary["NoWayHome"][4],
+                    policyDictionary["NoWayHome"][5],
+                    policyDictionary["NoWayHome"][6],
+                    policyDictionary["NoWayHome"][7],
+                    policyDictionary["NoWayHome"][8],
+                    policyDictionary["NoWayHome"][9],
+                    policyDictionary["NoWayHome"][10],
+                    policyDictionary["NoWayHome"][11],
+                    policyDictionary["NoWayHome"][12],
+                    policyDictionary["NoWayHome"][13]
                 ),
             };
 
