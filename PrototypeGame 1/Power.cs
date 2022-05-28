@@ -23,8 +23,10 @@ namespace PrototypeGame_1
         {
             Power chosenPower = null;
             int minPollution = -1;
+            Random rd = new Random();
+            int RNG = 0;
 
-            foreach(var power in powers)
+            foreach (var power in powers)
             {
                 if(minPollution == -1)
                 {
@@ -42,6 +44,13 @@ namespace PrototypeGame_1
                         chosenPower = power;
                     }
                 }
+            }
+
+            RNG = rd.Next(0, powers.Length + 2);
+
+            if(RNG < powers.Length && powers[RNG] != chosenPower)
+            {
+                return powers[RNG];
             }
 
             return chosenPower;
@@ -95,6 +104,28 @@ namespace PrototypeGame_1
             {
                 power.playerAmount = power.defaultPlayerAmount;
             }
+        }
+
+        static public int getCostMin(Power[] powers)
+        {
+            int min = -1;
+
+            foreach(var power in powers)
+            {
+                if(min == -1)
+                {
+                    min = power.cost;
+                }
+                else
+                {
+                    if(power.cost < min)
+                    {
+                        min = power.cost;
+                    }
+                }
+            }
+
+            return min;
         }
     }
 }

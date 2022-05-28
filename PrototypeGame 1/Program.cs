@@ -4,11 +4,11 @@ using System.IO;
 
 using System.Collections.Generic;
 using System.Collections;
-
 namespace PrototypeGame_1
 {
     class Program
     {
+        
         static void Main(string[] args)
         {
             // Access text file
@@ -24,16 +24,16 @@ namespace PrototypeGame_1
             StreamReader descriptionReader = new StreamReader(policyDescFile);
             // Create dictionary to store key value data from text file
             Dictionary<string, int[]> powerDictionary = new Dictionary<string, int[]>();
-            Dictionary <string,int> statDictionary = new Dictionary<string, int>();
+            Dictionary<string, int> statDictionary = new Dictionary<string, int>();
             List<int> foodArray = new List<int>();
             Dictionary<string, List<int>> policyDictionary = new Dictionary<string, List<int>>();
             Dictionary<string, string> descriptionDictionary = new Dictionary<string, string>();
             // Store value from text file to created dictionaries and list
             string line;
-            while((line = powerReader.ReadLine())!= null)
+            while ((line = powerReader.ReadLine()) != null)
             {
                 string[] srArray = line.Split(',');
-                int[] powerInt = {int.Parse(srArray[1]), int.Parse(srArray[2]), int.Parse(srArray[3]) };
+                int[] powerInt = { int.Parse(srArray[1]), int.Parse(srArray[2]), int.Parse(srArray[3]) };
                 powerDictionary.Add(srArray[0], powerInt);
             }
             while ((line = foodReader.ReadLine()) != null)
@@ -44,17 +44,17 @@ namespace PrototypeGame_1
                 foodArray.Add(int.Parse(srArray[2]));
                 foodArray.Add(int.Parse(srArray[3]));
             }
-            while ((line=statReader.ReadLine()) != null)
+            while ((line = statReader.ReadLine()) != null)
             {
                 string[] srArray = line.Split(',');
-                statDictionary.Add(srArray[0],int.Parse(srArray[1]));
+                statDictionary.Add(srArray[0], int.Parse(srArray[1]));
             }
             while ((line = policyReader.ReadLine()) != null)
             {
                 string[] srArray = line.Split(',');
                 List<int> srList = new List<int>();
                 int i = 0;
-                foreach(string s in srArray)
+                foreach (string s in srArray)
                 {
                     if (i != 0)
                     {
@@ -74,8 +74,7 @@ namespace PrototypeGame_1
             Power[] powers = new Power[]
             {
 
-                new Power("Oil", 250, 2, 8),
-                new Power("Tidal", 500, 1, 3),
+                
 
                 new Power("Oil",powerDictionary["Oil"][0],powerDictionary["Oil"][1], powerDictionary["Oil"][2]),
                 new Power("Tidal",powerDictionary["Tidal"][0],powerDictionary["Tidal"][1],powerDictionary["Tidal"][2])
@@ -96,6 +95,7 @@ namespace PrototypeGame_1
             statReader.Close();
             policyReader.Close();
             descriptionReader.Close();
+
             // Don't Change!
             int powerAmount = 0;
             int tempPowerAmount = 0;
@@ -106,6 +106,7 @@ namespace PrototypeGame_1
             int policyAccept = 0;
             int policyChosen = 0;
             int restartGame = 0;
+            int randomRng = 0;
             bool gameOver = false;
             bool powerProduced = false;
             bool foodProduced = false;
@@ -114,7 +115,6 @@ namespace PrototypeGame_1
             // Policy Lists
             Policy[] policies = new Policy[]
             {
-                
                 new Policy("RobbinFood",
                     descriptionDictionary["RobbinFood"],
                     policyDictionary["RobbinFood"][0],
@@ -227,13 +227,12 @@ namespace PrototypeGame_1
 
             Policy[] availablePolicies = new Policy[policies.Length];
 
-
-
             Random random = new Random();
 
             // Turn Loop
             do
             {
+                Console.WriteLine($"\nMonth {turn}");
                 // Reseting Variables
                 policyRng = 0;
 
@@ -252,16 +251,24 @@ namespace PrototypeGame_1
                     money.playerAmount = 0;
                 }
 
+                // Check Pollution Cap
+                if (pollution.playerAmount < 0)
+                {
+                    pollution.playerAmount = 0;
+                }
+
                 powerAmount = tempPowerAmount;
                 tempPowerAmount = 0;
 
                 // Produce Power
+                Console.WriteLine("\nProducing Power:");
                 while (powerAmount < maxPowerAmount)
                 {
                     var chosenPower = Power.selectPowerToUse(powers, money.playerAmount);
                     
                     if(chosenPower == null)
                     {
+                        Console.WriteLine($"Insufficient amount of money! {Power.getCostMin(powers)} amount of money required! No power was produced! (Current Money: {money.playerAmount})");
                         break;
                     }
 
@@ -269,10 +276,18 @@ namespace PrototypeGame_1
                     chosenPower.playerAmount++;
                     money.playerAmount -= chosenPower.cost;
                     pollution.playerAmount += chosenPower.pollution;
+
+                    Console.WriteLine($"Power: {powerAmount} (+1) | Money: {money.playerAmount} (-{chosenPower.cost}) | Pollution: {pollution.playerAmount} (+{chosenPower.pollution})");
+                }
+                
+                if(powerAmount == maxPowerAmount)
+                {
+                    Console.WriteLine("Max power reached!");
                 }
 
                 // Produce Food
-                if(powerAmount >= food.powerCost && money.playerAmount >= food.moneyCost)
+                Console.WriteLine("\nProducing Food:");
+                if (powerAmount >= food.powerCost && money.playerAmount >= food.moneyCost)
                 {
                     food.playerAmount += food.foodProduced;
                     money.playerAmount -= food.moneyCost;
@@ -281,11 +296,27 @@ namespace PrototypeGame_1
 
                     powerAmount -= food.powerCost;
                     money.playerAmount += random.Next(minMoneyGainAfterProducingFood, maxMoneyGainAfterProducingFood);
+
+                    Console.WriteLine($"Food: {food.playerAmount} (+{food.foodProduced}) | Money: {money.playerAmount} (-{food.moneyCost}) | Power: {powerAmount} (-{food.powerCost})");
                 }
-                pollution.playerAmount += random.Next(1, 4);
+                else
+                {
+                    if(powerAmount < food.powerCost)
+                    {
+                        Console.WriteLine($"Insufficient amount of power! {food.powerCost} amount of power required! No food was produced! (Current Power: {powerAmount})");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Insufficient amount of money! {food.moneyCost} amount of money required! No food was produced! (Current Money: {money.playerAmount})");
+                    }
+                }
+                randomRng = random.Next(1, 4);
+                pollution.playerAmount += randomRng;
+                Console.WriteLine($"\nPollution increased because of industry. Pollution: {pollution.playerAmount} (+{randomRng})");
+
 
                 // Adjusting Policy RNG
-                if(powerAmount >= 2 && food.playerAmount >= 3)
+                if (powerAmount >= 2 && food.playerAmount >= 3)
                 {
                     policyRng += 5; // 2 from power and 3 from food
                 }
@@ -318,8 +349,7 @@ namespace PrototypeGame_1
 
 
                 // Display Current Resources
-                Console.WriteLine($"\nMonth {turn}");
-                Console.WriteLine("Resources Amount:");
+                Console.WriteLine("\nResources Amount:");
                 Console.WriteLine($"Power: {powerAmount}");
                 Console.WriteLine($"Food: {food.playerAmount}");
                 Console.WriteLine($"Money: {money.playerAmount}");
@@ -341,7 +371,7 @@ namespace PrototypeGame_1
                     // Player Choose Policy
                     do
                     {
-                        Console.WriteLine("\nPlease Select Policy you want to implement:");
+                        Console.WriteLine("\nPlease select the policy you want to implement:");
                         try
                         {
                             policyChosen = Convert.ToInt32(Console.ReadLine());
@@ -397,6 +427,9 @@ namespace PrototypeGame_1
                     } while (policyAccept < 0 || policyAccept > 1);
 
                     // Policy Takes Effect
+                    money.playerAmount -= availablePolicies[policyChosen - 1].cashCost;
+                    Console.WriteLine($"\nPolicy cost paid! Money: {money.playerAmount} (-{availablePolicies[policyChosen - 1].cashCost})");
+                    Console.WriteLine("\nPolicy Effects:");
                     if(policyAccept == 1)
                     {
                         money.playerAmount += availablePolicies[policyChosen - 1].cashEffectAccept;
@@ -405,6 +438,13 @@ namespace PrototypeGame_1
                         pollution.playerAmount += availablePolicies[policyChosen - 1].pollutionEffectAccept;
                         Power.AddPower(powers, availablePolicies[policyChosen - 1].powerEffectAccept);
                         reputation.playerAmount += availablePolicies[policyChosen - 1].reputationEffectAccept;
+
+                        Console.WriteLine($"Power: {powerAmount + availablePolicies[policyChosen - 1].powerEffectAccept} ({availablePolicies[policyChosen - 1].powerEffectAccept})");
+                        Console.WriteLine($"Money: {money.playerAmount} ({availablePolicies[policyChosen - 1].cashEffectAccept})");
+                        Console.WriteLine($"Food: {food.playerAmount} ({availablePolicies[policyChosen - 1].foodEffectAccept})");
+                        Console.WriteLine($"Industry: {industry.playerAmount} ({availablePolicies[policyChosen - 1].industryEffectAccept})");
+                        Console.WriteLine($"Pollution: {pollution.playerAmount} ({availablePolicies[policyChosen - 1].pollutionEffectAccept})");
+                        Console.WriteLine($"Reputation: {reputation.playerAmount} ({availablePolicies[policyChosen - 1].reputationEffectAccept})");
                     }
                     else if(policyAccept == 0)
                     {
@@ -414,9 +454,14 @@ namespace PrototypeGame_1
                         pollution.playerAmount += availablePolicies[policyChosen - 1].pollutionEffectReject;
                         Power.AddPower(powers, availablePolicies[policyChosen - 1].powerEffectReject);
                         reputation.playerAmount += availablePolicies[policyChosen - 1].reputationEffectReject;
-                    }
 
-                    money.playerAmount -= availablePolicies[policyChosen - 1].cashCost;
+                        Console.WriteLine($"Power: {powerAmount + availablePolicies[policyChosen - 1].powerEffectReject} ({availablePolicies[policyChosen - 1].powerEffectReject})");
+                        Console.WriteLine($"Money: {money.playerAmount} ({availablePolicies[policyChosen - 1].cashEffectReject})");
+                        Console.WriteLine($"Food: {food.playerAmount} ({availablePolicies[policyChosen - 1].foodEffectReject})");
+                        Console.WriteLine($"Industry: {industry.playerAmount} ({availablePolicies[policyChosen - 1].industryEffectReject})");
+                        Console.WriteLine($"Pollution: {pollution.playerAmount} ({availablePolicies[policyChosen - 1].pollutionEffectReject})");
+                        Console.WriteLine($"Reputation: {reputation.playerAmount} ({availablePolicies[policyChosen - 1].reputationEffectReject})");
+                    }
 
                     // Reputation From Popularity
                     if(availablePolicies[policyChosen - 1].popularity >= 50 && policyAccept == 1)
@@ -437,6 +482,9 @@ namespace PrototypeGame_1
                     }
 
                     reputation.playerAmount += popularityRng;
+
+                    Console.WriteLine("\nPolicy Popularity Effect:");
+                    Console.WriteLine($"Reputation: {reputation.playerAmount} ({popularityRng})");
                 }
 
                 turn++;
