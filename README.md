@@ -15,7 +15,7 @@
 
 
 ## How to run?
-Method 1: via Command Prompt
+[Recommended] Method 1: via Command Prompt
 1. Open CMD
 2. `cd "C:\wherever\project\is\bin\Debug\netcoreapp3.1"`
 3. `".\Prototype 1.exe"`
@@ -23,3 +23,20 @@ Method 1: via Command Prompt
 Method 2: via exe
 1. Inside the zip folder, navigate through "P2M-2022-main\PrototypeGame 1\bin\Debug\netcoreapp3.1"
 2. Double-click the file "PrototypeGame 1.exe", which is located inside folder "netcoreapps3.1"
+
+##Editing Data Values (for Game Designers)
+Navigate to C:\Unity Projects\P2M-2022\PrototypeGame 1\bin\Debug\netcoreapp3.1
+
+`power.txt`
+Format: (string powerName, int powerCost, int powerPollution, int powerPlayerAmount)
+`food.txt`
+Format: (int foodPowerCost, int foodMoneyCost, int foodPlayerAmount, int foodProduce)
+`stats.txt`
+Format: (string title, int value)
+`policy.txt`
+Format: (string title, int cashCost, int popularity, int cashEffectAccept, int foodEffectAccept, int powerEffectAccept, int pollutionEffectAccept, int industryEffectAccept, int reputationEffectAccept, int cashEffectReject, int foodEffectReject, int powerEffectReject, int pollutionEffectReject, int industryEffectReject, int reputationEffectReject)
+`policyDescription.txt`
+Format: (string title, string description)
+
+**Note: DO NOT change any name/title and the amount of data per line as well as comma seperators**
+Each stat/object's value is defined in a single line
