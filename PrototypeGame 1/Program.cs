@@ -73,13 +73,13 @@ namespace PrototypeGame_1
 
             Power[] powers = new Power[]
             {
-<<<<<<< Updated upstream
+
                 new Power("Oil", 250, 2, 8),
                 new Power("Tidal", 500, 1, 3),
-=======
+
                 new Power("Oil",powerDictionary["Oil"][0],powerDictionary["Oil"][1], powerDictionary["Oil"][2]),
                 new Power("Tidal",powerDictionary["Tidal"][0],powerDictionary["Tidal"][1],powerDictionary["Tidal"][2])
->>>>>>> Stashed changes
+
             };
             Food food = new Food(foodArray[0], foodArray[1], foodArray[2], foodArray[3]);
             Money money = new Money(statDictionary["money"]);
@@ -115,25 +115,7 @@ namespace PrototypeGame_1
             Policy[] policies = new Policy[]
             {
                 
-                new Policy(
-                    "RobbinFood",
-<<<<<<< Updated upstream
-                    "A series of thefts have been reported recently. Curiously, the stole goods consists exclusively of food. Police investigations report thejob was not particularly professional, but enough to stump them. This bill will authorize the hiring of additional personel to aid the theft investigations.",
-                    500,
-                    60,
-                    -1000,
-                    0,
-                    0,
-                    0,
-                    0,
-                    5,
-                    0,
-                    -3,
-                    0,
-                    0,
-                    0,
-                    5
-=======
+                new Policy("RobbinFood",
                     descriptionDictionary["RobbinFood"],
                     policyDictionary["RobbinFood"][0],
                     policyDictionary["RobbinFood"][1],
@@ -149,7 +131,7 @@ namespace PrototypeGame_1
                     policyDictionary["RobbinFood"][11],
                     policyDictionary["RobbinFood"][12],
                     policyDictionary["RobbinFood"][13]
->>>>>>> Stashed changes
+
                 ),
                 new Policy(
                     "PetroBigBro",
