@@ -26,3 +26,17 @@ C:\Unity Projects\P2M-2022-main\PrototypeGame 1\obj\Debug\netcoreapp3.1\Prototyp
 C:\Unity Projects\P2M-2022-main\PrototypeGame 1\obj\Debug\netcoreapp3.1\PrototypeGame 1.dll
 C:\Unity Projects\P2M-2022-main\PrototypeGame 1\obj\Debug\netcoreapp3.1\PrototypeGame 1.pdb
 C:\Unity Projects\P2M-2022-main\PrototypeGame 1\obj\Debug\netcoreapp3.1\PrototypeGame 1.genruntimeconfig.cache
+C:\Users\User\OneDrive - Bina Nusantara University\BGDC\P2M\cli code\PrototypeGame 1 Main\PrototypeGame 1\bin\Debug\netcoreapp3.1\PrototypeGame 1.exe
+C:\Users\User\OneDrive - Bina Nusantara University\BGDC\P2M\cli code\PrototypeGame 1 Main\PrototypeGame 1\bin\Debug\netcoreapp3.1\PrototypeGame 1.deps.json
+C:\Users\User\OneDrive - Bina Nusantara University\BGDC\P2M\cli code\PrototypeGame 1 Main\PrototypeGame 1\bin\Debug\netcoreapp3.1\PrototypeGame 1.runtimeconfig.json
+C:\Users\User\OneDrive - Bina Nusantara University\BGDC\P2M\cli code\PrototypeGame 1 Main\PrototypeGame 1\bin\Debug\netcoreapp3.1\PrototypeGame 1.runtimeconfig.dev.json
+C:\Users\User\OneDrive - Bina Nusantara University\BGDC\P2M\cli code\PrototypeGame 1 Main\PrototypeGame 1\bin\Debug\netcoreapp3.1\PrototypeGame 1.dll
+C:\Users\User\OneDrive - Bina Nusantara University\BGDC\P2M\cli code\PrototypeGame 1 Main\PrototypeGame 1\bin\Debug\netcoreapp3.1\PrototypeGame 1.pdb
+C:\Users\User\OneDrive - Bina Nusantara University\BGDC\P2M\cli code\PrototypeGame 1 Main\PrototypeGame 1\obj\Debug\netcoreapp3.1\PrototypeGame 1.csproj.AssemblyReference.cache
+C:\Users\User\OneDrive - Bina Nusantara University\BGDC\P2M\cli code\PrototypeGame 1 Main\PrototypeGame 1\obj\Debug\netcoreapp3.1\PrototypeGame 1.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\OneDrive - Bina Nusantara University\BGDC\P2M\cli code\PrototypeGame 1 Main\PrototypeGame 1\obj\Debug\netcoreapp3.1\PrototypeGame 1.AssemblyInfoInputs.cache
+C:\Users\User\OneDrive - Bina Nusantara University\BGDC\P2M\cli code\PrototypeGame 1 Main\PrototypeGame 1\obj\Debug\netcoreapp3.1\PrototypeGame 1.AssemblyInfo.cs
+C:\Users\User\OneDrive - Bina Nusantara University\BGDC\P2M\cli code\PrototypeGame 1 Main\PrototypeGame 1\obj\Debug\netcoreapp3.1\PrototypeGame 1.csproj.CoreCompileInputs.cache
+C:\Users\User\OneDrive - Bina Nusantara University\BGDC\P2M\cli code\PrototypeGame 1 Main\PrototypeGame 1\obj\Debug\netcoreapp3.1\PrototypeGame 1.dll
+C:\Users\User\OneDrive - Bina Nusantara University\BGDC\P2M\cli code\PrototypeGame 1 Main\PrototypeGame 1\obj\Debug\netcoreapp3.1\PrototypeGame 1.pdb
+C:\Users\User\OneDrive - Bina Nusantara University\BGDC\P2M\cli code\PrototypeGame 1 Main\PrototypeGame 1\obj\Debug\netcoreapp3.1\PrototypeGame 1.genruntimeconfig.cache

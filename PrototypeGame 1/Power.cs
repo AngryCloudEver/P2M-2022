@@ -48,7 +48,7 @@ namespace PrototypeGame_1
 
             RNG = rd.Next(0, powers.Length + 2);
 
-            if(RNG < powers.Length && powers[RNG] != chosenPower)
+            if(RNG < powers.Length && powers[RNG] != chosenPower && money >= powers[RNG].cost)
             {
                 return powers[RNG];
             }

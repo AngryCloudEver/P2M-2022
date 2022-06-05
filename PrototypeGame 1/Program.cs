@@ -8,7 +8,6 @@ namespace PrototypeGame_1
 {
     class Program
     {
-        
         static void Main(string[] args)
         {
             // Access text file
@@ -22,12 +21,14 @@ namespace PrototypeGame_1
             StreamReader statReader = new StreamReader(statFile);
             StreamReader policyReader = new StreamReader(policyFile);
             StreamReader descriptionReader = new StreamReader(policyDescFile);
+
             // Create dictionary to store key value data from text file
             Dictionary<string, int[]> powerDictionary = new Dictionary<string, int[]>();
             Dictionary<string, int> statDictionary = new Dictionary<string, int>();
             List<int> foodArray = new List<int>();
             Dictionary<string, List<int>> policyDictionary = new Dictionary<string, List<int>>();
             Dictionary<string, string> descriptionDictionary = new Dictionary<string, string>();
+
             // Store value from text file to created dictionaries and list
             string line;
             while ((line = powerReader.ReadLine()) != null)
@@ -69,14 +70,14 @@ namespace PrototypeGame_1
                 string[] srArray = line.Split(',');
                 descriptionDictionary.Add(srArray[0], srArray[1]);
             }
-            // Declare stat values based on  value from dictionary and list
 
+            // Declare stat values based on  value from dictionary and list
             Power[] powers = new Power[]
             {
                 new Power("Oil",powerDictionary["Oil"][0],powerDictionary["Oil"][1], powerDictionary["Oil"][2]),
                 new Power("Tidal",powerDictionary["Tidal"][0],powerDictionary["Tidal"][1],powerDictionary["Tidal"][2])
-
             };
+
             Food food = new Food(foodArray[0], foodArray[1], foodArray[2], foodArray[3]);
             Money money = new Money(statDictionary["money"]);
             Industry industry = new Industry(statDictionary["industry"]);
@@ -268,13 +269,15 @@ namespace PrototypeGame_1
                         Console.WriteLine($"Insufficient amount of money! {Power.getCostMin(powers)} amount of money required! No power was produced! (Current Money: {money.playerAmount})");
                         break;
                     }
+                    else
+                    {
+                        powerAmount++;
+                        chosenPower.playerAmount++;
+                        money.playerAmount -= chosenPower.cost;
+                        pollution.playerAmount += chosenPower.pollution;
 
-                    powerAmount++;
-                    chosenPower.playerAmount++;
-                    money.playerAmount -= chosenPower.cost;
-                    pollution.playerAmount += chosenPower.pollution;
-
-                    Console.WriteLine($"Power: {powerAmount} (+1) | Money: {money.playerAmount} (-{chosenPower.cost}) | Pollution: {pollution.playerAmount} (+{chosenPower.pollution})");
+                        Console.WriteLine($"Power: {powerAmount} (+1) | Money: {money.playerAmount} (-{chosenPower.cost}) | Pollution: {pollution.playerAmount} (+{chosenPower.pollution})");
+                    }
                 }
                 
                 if(powerAmount == maxPowerAmount)
